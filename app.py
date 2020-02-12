@@ -50,7 +50,7 @@ def send_surveillance_image(channel_id):
 
 @slack_events_adapter.on("app_mention")
 def app_mentioned(event_data):
-    print (event_data)['event']
+    print (event_data['event'])
     print("app mentioned")
     text = event_data['event']['text']
     channel_id = event_data['event']['channel']
