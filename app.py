@@ -13,6 +13,9 @@ approved_user_id = os.environ.get('APPROVED_USER_ID')
 surveillance_channel_name = os.environ.get('SURVEILLANCE_CHANNEL_NAME')
 surveillance_channel_id = ''
 
+camera = PiCamera()
+app = Flask(__name__)
+
 slack_client = WebClient(slack_api_token)
 slack_events_adapter = SlackEventAdapter(slack_signing_secret, "/slack/events", app)
 
@@ -21,9 +24,6 @@ all_channels = slack_client.channels_list(exclude_archived=1)['channels']
 for channel in all_channels:
     if channel['name'] == surveillance_channel_name:
         surveillance_channel_id = channel['id']
-
-camera = PiCamera()
-app = Flask(__name__)
 
 def send_surveillance_image(channel_id):
     slack_client.chat_postMessage(
