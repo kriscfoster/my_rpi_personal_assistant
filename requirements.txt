@@ -2,3 +2,4 @@ Flask==1.1.1
 request==2019.4.13
 slackclient==2.5.0
 picamera==1.13
+slackeventsapi==2.1.0
