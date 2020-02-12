@@ -26,11 +26,6 @@ for channel in all_channels:
         surveillance_channel_id = channel['id']
 
 def send_surveillance_image(channel_id):
-    slack_client.chat_postMessage(
-        channel=channel_id,
-        text='Sure, taking a picture for you now :camera_with_flash:'
-    )
-
     millis = str(round(time.time() * 1000))
     surveillance_image_path = surveillance_images_base_path + millis + '.jpg'
     camera.capture(surveillance_image_path)
@@ -57,7 +52,12 @@ def app_mentioned(event_data):
     user_id = event_data['event']['user']
     if user_id == approved_user_id:
         if 'image' in text:
-            send_surveillance_image(channel_id)
+            slack_client.chat_postMessage(
+                channel=channel_id,
+                text='Sure, taking a picture for you now :camera_with_flash:'
+            )
+            thread = Thread(target=send_surveillance_image, args=[channel_id])
+            thread.start()
         else:
             slack_client.chat_postMessage(
               channel=channel_id,
@@ -68,6 +68,12 @@ def app_mentioned(event_data):
               channel=channel_id,
               text='You\'re not allowed to do that :police_car:'
             )
+
+def backgroundworker(somedata,response_url):
+    payload = {"text":"your task is complete",
+                "username": "bot"}
+    requests.post(response_url,data=json.dumps(payload))
+
 
 if __name__ == '__main__':
     app.run()
