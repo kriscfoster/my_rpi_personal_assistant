@@ -52,7 +52,7 @@ def send_youtube_stats(channel_id):
     response = requests.get('https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UCWkzkhQ3syxBjjAYwqCbzYg&key=' + youtube_api_token)
     subscriber_count = response.json()['items'][0]['statistics']['subscriberCount']
     view_count = response.json()['items'][0]['statistics']['viewCount']
-    response_text = ':smiley: subscribers: ' + subscriber_count + '\n' + ':eyes: views: ' + view_count
+    response_text = ':smiley: subscribers: *' + subscriber_count + '*\n' + ':eyes: views: *' + view_count + '*'
     slack_client.chat_postMessage(
       channel=channel_id,
       text=response_text
@@ -78,13 +78,13 @@ def app_mentioned(event_data):
             toggle_surveillance_mode = True
             slack_client.chat_postMessage(
               channel=channel_id,
-              text=':video_camera: surveillance mode ON, movement detections will be sent to #' + surveillance_channel_name
+              text=':video_camera: surveillance mode *ON*, movement detections will be sent to <#' + surveillance_channel_id + '>'
             )
         elif 'surveillance off' in text:
             toggle_surveillance_mode = False
             slack_client.chat_postMessage(
               channel=channel_id,
-              text=':video_camera: surveillance mode OFF'
+              text=':video_camera: surveillance mode *OFF*'
             )
         else:
             slack_client.chat_postMessage(
