@@ -4,3 +4,4 @@ slackclient==2.5.0
 picamera==1.13
 slackeventsapi==2.1.0
 requests
+samsungtvws==1.2.0
