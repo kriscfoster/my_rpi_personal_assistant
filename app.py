@@ -16,6 +16,7 @@ surveillance_images_base_path = os.environ.get('SURVEILLANCE_IMAGES_BASE_PATH')
 approved_user_id = os.environ.get('APPROVED_USER_ID')
 surveillance_channel_name = os.environ.get('SURVEILLANCE_CHANNEL_NAME')
 surveillance_channel_id = ''
+toggle_surveillance_mode = False
 
 camera = PiCamera()
 app = Flask(__name__)
@@ -36,7 +37,7 @@ def send_surveillance_image(channel_id):
 
     slack_client.chat_postMessage(
       channel=channel_id,
-      text='Surveillance picture taken, going to upload it :computer:'
+      text='Surveillance picture taken, uploading it :computer:'
     )
 
     slack_client.files_upload(
@@ -73,6 +74,18 @@ def app_mentioned(event_data):
         elif 'YouTube' in text:
             thread = Thread(target=send_youtube_stats, args=[channel_id])
             thread.start()
+        elif 'surveillance on' in text:
+            toggle_surveillance_mode = True
+            slack_client.chat_postMessage(
+              channel=channel_id,
+              text=':video_camera: surveillance mode ON, movement detections will be sent to #' + surveillance_channel_name
+            )
+        elif 'surveillance off' in text:
+            toggle_surveillance_mode = False
+            slack_client.chat_postMessage(
+              channel=channel_id,
+              text=':video_camera: surveillance mode OFF'
+            )
         else:
             slack_client.chat_postMessage(
               channel=channel_id,
