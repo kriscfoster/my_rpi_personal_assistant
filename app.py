@@ -58,9 +58,8 @@ def send_youtube_stats(channel_id):
       text=response_text
     )
 
-@slack_events_adapter.on('message.im')
+@slack_events_adapter.on('app_mention')
 def app_mentioned(event_data):
-    print(event_data)
     text = event_data['event']['text']
     channel_id = event_data['event']['channel']
     user_id = event_data['event']['user']
