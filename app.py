@@ -17,10 +17,6 @@ approved_user_id = os.environ.get('APPROVED_USER_ID')
 surveillance_channel_name = os.environ.get('SURVEILLANCE_CHANNEL_NAME')
 surveillance_channel_id = ''
 
-response = requests.get('https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UCWkzkhQ3syxBjjAYwqCbzYg&key=' + youtube_api_token)
-print(response.json()['items'][0]['statistics']['subscriberCount'])
-print(response.json()['items'][0]['statistics']['viewCount'])
-
 camera = PiCamera()
 app = Flask(__name__)
 
@@ -54,7 +50,7 @@ def send_surveillance_image(channel_id):
 def send_youtube_stats(channel_id):
     response = requests.get('https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UCWkzkhQ3syxBjjAYwqCbzYg&key=' + youtube_api_token)
     subscriber_count = response.json()['items'][0]['statistics']['subscriberCount']
-    view_count response.json()['items'][0]['statistics']['viewCount']
+    view_count = response.json()['items'][0]['statistics']['viewCount']
     response_text = ':youtube: subscribers: ' + subscriber_count + '\n' + ':youtube: views: ' + view_count
     slack_client.chat_postMessage(
       channel=channel_id,
@@ -63,8 +59,6 @@ def send_youtube_stats(channel_id):
 
 @slack_events_adapter.on("app_mention")
 def app_mentioned(event_data):
-    print (event_data['event'])
-    print("app mentioned")
     text = event_data['event']['text']
     channel_id = event_data['event']['channel']
     user_id = event_data['event']['user']
@@ -76,8 +70,9 @@ def app_mentioned(event_data):
             )
             thread = Thread(target=send_surveillance_image, args=[channel_id])
             thread.start()
-        else if 'youtube' in text:
+        elif 'YouTube' in text:
             thread = Thread(target=send_youtube_stats, args=[channel_id])
+            thread.start()
         else:
             slack_client.chat_postMessage(
               channel=channel_id,
