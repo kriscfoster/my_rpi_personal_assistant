@@ -9,7 +9,7 @@ def post_message(channel_id, message):
     text=message
   )
 
-def upload_file(channel_id, file, title)
+def upload_file(channel_id, file, title):
   slack_client.files_upload(
     channels=channel_id,
     file=file,
