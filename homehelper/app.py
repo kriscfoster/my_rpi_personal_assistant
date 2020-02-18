@@ -11,9 +11,9 @@ import surveillance
 
 slack_signing_secret=os.environ.get('SLACK_SIGNING_SECRET')
 approved_user_id=os.environ.get('APPROVED_USER_ID')
-slack_events_adapter=slackeventsapi.SlackEventAdapter(slack_signing_secret, "/slack/events", app)
 
 app=flask.Flask(__name__)
+slack_events_adapter=slackeventsapi.SlackEventAdapter(slack_signing_secret, "/slack/events", app)
 
 @slack_events_adapter.on('app_mention')
 def app_mentioned(event_data):
