@@ -70,7 +70,7 @@ def turn_tv_off(channel_id):
 
     slack_client.chat_postMessage(
       channel=channel_id,
-      text=':tv: turned tv *OFF*'
+      text=':tv: tv turned *off*'
     )
 
 def turn_tv_on(channel_id):
@@ -95,7 +95,7 @@ def turn_tv_on(channel_id):
 
     slack_client.chat_postMessage(
       channel=channel_id,
-      text=':tv: turned tv *ON*'
+      text=':tv: tv turned *on*'
     )
 
 def send_surveillance_image(channel_id):
