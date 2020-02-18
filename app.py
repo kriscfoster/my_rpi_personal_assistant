@@ -41,7 +41,69 @@ def get_tv_state():
   state = response.json()['device']['PowerState']
   return state;
 
+def send_tv_state(channel_id):
+  tv_state = get_tv_state()
+  slack_client.chat_postMessage(
+    channel=channel_id,
+    text=':tv: state is: *' + tv_state + '*'
+  )
+
+def turn_tv_off(channel_id):
+  tv_state = get_tv_state()
+
+  message = ''
+
+  if tv_state == 'on':
+    message = ':tv: tv state is *on*, turning *off*'
+  else:
+    message = ':tv: tv state is already *off*'
+
+
+  slack_client.chat_postMessage(
+    channel=channel_id,
+    text=message
+  )
+
+
+  if tv_state == 'on':
+    tv.shortcuts().power()
+
+    slack_client.chat_postMessage(
+      channel=channel_id,
+      text=':tv: turned tv *OFF*'
+    )
+
+def turn_tv_on(channel_id):
+  tv_state = get_tv_state()
+
+  message = ''
+
+  if tv_state == 'off':
+    message = ':tv: tv state is *off*, turning *on*'
+  else:
+    message = ':tv: tv state is already *on*'
+
+
+  slack_client.chat_postMessage(
+    channel=channel_id,
+    text=message
+  )
+
+
+  if tv_state == 'off':
+    tv.shortcuts().power()
+
+    slack_client.chat_postMessage(
+      channel=channel_id,
+      text=':tv: turned tv *ON*'
+    )
+
 def send_surveillance_image(channel_id):
+  slack_client.chat_postMessage(
+    channel=channel_id,
+    text='Sure, taking a picture for you now :camera_with_flash:'
+  )
+
   millis = str(round(time.time() * 1000))
   surveillance_image_path = surveillance_images_base_path + millis + '.jpg'
   camera.capture(surveillance_image_path)
@@ -76,63 +138,20 @@ def app_mentioned(event_data):
   user_id = event_data['event']['user']
   if user_id == approved_user_id:
     if 'picture' in text:
-      slack_client.chat_postMessage(
-          channel=channel_id,
-          text='Sure, taking a picture for you now :camera_with_flash:'
-      )
       thread = Thread(target=send_surveillance_image, args=[channel_id])
       thread.start()
     elif 'YouTube' in text:
       thread = Thread(target=send_youtube_stats, args=[channel_id])
       thread.start()
-    elif 'surveillance on' in text:
-      toggle_surveillance_mode = True
-      slack_client.chat_postMessage(
-        channel=channel_id,
-        text=':video_camera: surveillance mode *ON*, movement detections will be sent to <#' + surveillance_channel_id + '>'
-      )
-    elif 'surveillance off' in text:
-      toggle_surveillance_mode = False
-      slack_client.chat_postMessage(
-        channel=channel_id,
-        text=':video_camera: surveillance mode *OFF*'
-      )
     elif 'tv state' in text:
-      tv_state = get_tv_state()
-      slack_client.chat_postMessage(
-        channel=channel_id,
-        text=':tv: state is: *' + tv_state + '*'
-      )
+      thread = Thread(target=send_tv_state, args=[channel_id])
+      thread.start()
     elif 'tv off' in text:
-      slack_client.chat_postMessage(
-        channel=channel_id,
-        text=':tv: turning tv *OFF*'
-      )
-
-      tv_state = get_tv_state()
-
-      if tv_state == 'on':
-        tv.shortcuts().power()
-
-      slack_client.chat_postMessage(
-        channel=channel_id,
-        text=':tv: tv is *OFF*'
-      )
+      thread = Thread(target=turn_tv_off, args=[channel_id])
+      thread.start()
     elif 'tv on' in text:
-      slack_client.chat_postMessage(
-        channel=channel_id,
-        text=':tv: turning tv *ON*'
-      )
-
-      tv_state = get_tv_state()
-
-      if tv_state == 'off':
-        tv.shortcuts().power()
-
-      slack_client.chat_postMessage(
-        channel=channel_id,
-        text=':tv: tv is *ON*'
-      )
+      thread = Thread(target=turn_tv_on, args=[channel_id])
+      thread.start()
     else:
       slack_client.chat_postMessage(
         channel=channel_id,
