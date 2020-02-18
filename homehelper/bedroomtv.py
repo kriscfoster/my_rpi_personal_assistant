@@ -1,6 +1,7 @@
 import samsungtvws
 import os
 import slackweb
+import requests
 
 tv_ip_address=os.environ.get('TV_IP_ADDRESS')
 
