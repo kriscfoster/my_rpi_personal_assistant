@@ -78,7 +78,7 @@ def turn_tv_on(channel_id):
 
   message = ''
 
-  if tv_state == 'off':
+  if tv_state != 'on':
     message = ':tv: tv state is *off*, turning *on*'
   else:
     message = ':tv: tv state is already *on*'
@@ -90,7 +90,7 @@ def turn_tv_on(channel_id):
   )
 
 
-  if tv_state == 'off':
+  if tv_state != 'on':
     tv.shortcuts().power()
 
     slack_client.chat_postMessage(
