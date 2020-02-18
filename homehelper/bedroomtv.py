@@ -20,7 +20,6 @@ def send_state(channel_id):
   message=':tv: tv state is *' + tv_state + '*'
   slackweb.post_message(channel_id, message)
 
-
 def turn_off(channel_id):
   tv_state=get_state()
 
