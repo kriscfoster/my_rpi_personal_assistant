@@ -1,7 +1,6 @@
 import flask
 import threading
 import os
-import time
 import slackeventsapi
 
 import slackweb
