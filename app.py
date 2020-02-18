@@ -23,6 +23,9 @@ toggle_surveillance_mode = False
 camera = PiCamera()
 app = Flask(__name__)
 
+token_file = os.path.dirname(os.path.realpath(__file__)) + '/tv-token.txt'
+tv = SamsungTVWS(host=tv_ip_address, port=8002, token_file=token_file)
+
 slack_client = WebClient(slack_api_token)
 slack_events_adapter = SlackEventAdapter(slack_signing_secret, "/slack/events", app)
 
