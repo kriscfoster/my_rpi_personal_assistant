@@ -17,7 +17,7 @@ def toggle_state():
 
 def send_state(channel_id):
   tv_state=get_state()
-  message=':tv: tv state is: *' + tv_state + '*'
+  message=':tv: tv state is *' + tv_state + '*'
   slackweb.post_message(channel_id, message)
 
 

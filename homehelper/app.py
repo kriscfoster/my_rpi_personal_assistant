@@ -5,12 +5,11 @@ from slack import RTMClient
 from slackeventsapi import SlackEventAdapter
 import slackweb
 import bedroomtv
+import youtube
 
 import os
 import time
-import requests
 
-youtube_api_token=os.environ.get('YOUTUBE_API_TOKEN')
 surveillance_images_base_path=os.environ.get('SURVEILLANCE_IMAGES_BASE_PATH')
 slack_signing_secret=os.environ.get('SLACK_SIGNING_SECRET')
 approved_user_id=os.environ.get('APPROVED_USER_ID')
@@ -34,14 +33,6 @@ def send_surveillance_image(channel_id):
   slackweb.upload_file(channel_id, surveillance_image_path, surveillance_image_path)
 
 
-def send_youtube_stats(channel_id):
-  response=requests.get('https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UCWkzkhQ3syxBjjAYwqCbzYg&key=' + youtube_api_token)
-  subscriber_count=response.json()['items'][0]['statistics']['subscriberCount']
-  view_count=response.json()['items'][0]['statistics']['viewCount']
-  response_text=':smiley: subscribers: *' + subscriber_count + '*\n' + ':eyes: views: *' + view_count + '*'
-  slackweb.post_message(channel_id, response_text)
-
-
 @slack_events_adapter.on('app_mention')
 def app_mentioned(event_data):
   text=event_data['event']['text']
@@ -52,7 +43,7 @@ def app_mentioned(event_data):
       thread=Thread(target=send_surveillance_image, args=[channel_id])
       thread.start()
     elif 'YouTube' in text:
-      thread=Thread(target=send_youtube_stats, args=[channel_id])
+      thread=Thread(target=youtube.send_stats, args=[channel_id])
       thread.start()
     elif 'tv state' in text:
       thread=Thread(target=bedroomtv.send_state, args=[channel_id])
