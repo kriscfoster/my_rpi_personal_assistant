@@ -1,5 +1,6 @@
 import requests
 import slackweb
+import os
 
 youtube_api_token=os.environ.get('YOUTUBE_API_TOKEN')
 
