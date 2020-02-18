@@ -1,4 +1,5 @@
 import slack
+import os
 
 slack_api_token=os.environ.get('SLACK_API_TOKEN')
 slack_client=slack.WebClient(slack_api_token)
