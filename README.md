@@ -28,3 +28,4 @@ my_rpi is a personal assistant using a Raspberry Pi that you can interract with 
 * ```TV_IP_ADDRESS```
 * ```SURVEILLANCE_IMAGES_BASE_PATH```
 * ```YOUTUBE_API_TOKEN```
+* ```YOUTUBE_CHANNEL_ID```
