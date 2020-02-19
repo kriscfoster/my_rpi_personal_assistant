@@ -2,10 +2,10 @@
 my_rpi is a personal assistant Slack Bot using a Raspberry Pi 🥧
 
 ## features
-* takes live picture.
-* gets tv status (on/standby).
-* turns tv on/off.
-* gets YouTube channel stats.
+* takes live picture 🏙.
+* gets tv status (on/standby) 📺.
+* turns tv on/off 🔌.
+* gets YouTube channel stats 🔢.
 
 ## virtual environment
 
