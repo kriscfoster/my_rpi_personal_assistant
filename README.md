@@ -1,4 +1,11 @@
 # my_rpi_personal_assistant
+my_rpi is a personal assistant using a Raspberry Pi that you can interract with over Slack.
+
+## features
+* takes live picture.
+* gets tv status (on/standby).
+* turns tv on/off.
+* gets YouTube channel stats.
 
 ## virtual environment
 
@@ -15,9 +22,9 @@
 ```pip install -r requirements.txt```
 
 ## required environment variables
-```SLACK_SIGNING_SECRET```
-```SLACK_API_TOKEN```
-```APPROVED_USER_ID```
-```TV_IP_ADDRESS```
-```SURVEILLANCE_IMAGES_BASE_PATH```
-```YOUTUBE_API_TOKEN```
+* ```SLACK_SIGNING_SECRET```
+* ```SLACK_API_TOKEN```
+* ```APPROVED_USER_ID```
+* ```TV_IP_ADDRESS```
+* ```SURVEILLANCE_IMAGES_BASE_PATH```
+* ```YOUTUBE_API_TOKEN```
