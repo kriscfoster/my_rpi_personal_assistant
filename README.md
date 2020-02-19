@@ -1,4 +1,4 @@
-# home_helper
+# my_rpi_personal_assistant
 
 ## virtual environment
 
