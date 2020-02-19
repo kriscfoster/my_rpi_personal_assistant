@@ -1,5 +1,5 @@
 # my_rpi_personal_assistant
-my_rpi is a personal assistant using a Raspberry Pi that you can interract with over Slack.
+my_rpi is a personal assistant Slack Bot using a Raspberry Pi 🥧
 
 ## features
 * takes live picture.
